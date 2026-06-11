@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function CustomTripPage() {
   const router = useRouter()
@@ -51,66 +52,111 @@ export default function CustomTripPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-2">Custom Private Trip</h1>
-      <p className="text-gray-600 mb-4">Buat itinerary sesuai keinginanmu. Termasuk transport + driver.</p>
-      
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          type="text"
-          placeholder="Nama lengkap *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_name: e.target.value})}
-        />
-        <input
-          type="tel"
-          placeholder="Nomor WhatsApp *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_whatsapp: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Destinasi yang diinginkan (contoh: Bandung, Jogja, Bali) *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, destinations: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Durasi (contoh: 3 hari 2 malam) *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, duration: e.target.value})}
-        />
-        <input
-          type="number"
-          placeholder="Jumlah orang"
-          min="1"
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_count: parseInt(e.target.value)})}
-        />
-        <input
-          type="text"
-          placeholder="Budget estimasi (opsional)"
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, budget: e.target.value})}
-        />
-        <textarea
-          placeholder="Request khusus (hotel bintang berapa, mau visit tempat apa aja, dll)"
-          className="w-full p-2 border rounded"
-          rows={4}
-          onChange={e => setForm({...form, special_requests: e.target.value})}
-        />
-        <button 
-          type="submit" 
-          disabled={loading}
-          className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
-        >
-          {loading ? 'Mengirim...' : 'Kirim Request Custom Trip'}
-        </button>
-      </form>
+    <div className="max-w-2xl mx-auto px-4">
+      <div className="card-beige p-8 space-y-8">
+        <header className="text-center space-y-2 border-b border-border pb-6">
+          <h1 className="text-3xl font-bold italic">Custom Private Trip</h1>
+          <p className="text-accent italic">Rancang perjalanan impian Anda sendiri</p>
+        </header>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Nama Lengkap</label>
+              <input
+                type="text"
+                placeholder="cth: Budi Santoso"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, guest_name: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Nomor WhatsApp</label>
+              <input
+                type="tel"
+                placeholder="cth: 628123456789"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, guest_whatsapp: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Destinasi Impian</label>
+            <input
+              type="text"
+              placeholder="cth: Bandung, Jogja, atau Bali"
+              required
+              className="input-beige"
+              onChange={e => setForm({...form, destinations: e.target.value})}
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Durasi</label>
+              <input
+                type="text"
+                placeholder="cth: 3 hari 2 malam"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, duration: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Jumlah Orang</label>
+              <input
+                type="number"
+                placeholder="cth: 5"
+                min="1"
+                className="input-beige"
+                onChange={e => setForm({...form, guest_count: parseInt(e.target.value)})}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Estimasi Budget (Opsional)</label>
+            <input
+              type="text"
+              placeholder="Sebutkan range budget Anda"
+              className="input-beige"
+              onChange={e => setForm({...form, budget: e.target.value})}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Permintaan Khusus</label>
+            <textarea
+              placeholder="Hotel bintang berapa? Tempat wisata apa yang wajib dikunjungi?"
+              className="input-beige"
+              rows={4}
+              onChange={e => setForm({...form, special_requests: e.target.value})}
+            />
+          </div>
+
+          <div className="pt-4">
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn-primary w-full text-lg py-4 shadow-lg shadow-primary/20 disabled:opacity-50"
+            >
+              {loading ? 'Sedang Memproses...' : 'Kirim Request Custom Trip'}
+            </button>
+            <p className="text-center text-xs text-accent mt-4 italic">
+              * Mami akan menghubungi Anda via WhatsApp untuk mendiskusikan itinerary
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <div className="mt-8 text-center">
+        <Link href="/" className="text-accent hover:text-primary transition-colors text-sm font-medium">
+          ← Kembali ke Beranda
+        </Link>
+      </div>
     </div>
   )
 }

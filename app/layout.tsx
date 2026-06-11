@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +28,25 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-secondary selection:text-foreground">
+        <header className="border-b border-border bg-white/50 backdrop-blur-md sticky top-0 z-50">
+          <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-primary transition-colors">
+              Wan Wardah
+            </Link>
+            <nav className="flex gap-6 text-sm font-medium">
+              <Link href="/book" className="hover:text-primary transition-colors">Booking</Link>
+              <Link href="/custom-trip" className="hover:text-primary transition-colors">Custom Trip</Link>
+            </nav>
+          </div>
+        </header>
+        <main className="flex-1 py-8">
+          {children}
+        </main>
+        <footer className="border-t border-border py-8 mt-12 bg-white/30 text-center text-sm text-accent">
+          <p>© 2026 Wan Wardah. Semua hak dilindungi.</p>
+        </footer>
+      </body>
     </html>
   );
 }

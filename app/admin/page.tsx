@@ -117,124 +117,183 @@ export default function AdminPage() {
 
   if (!authenticated) {
     return (
-      <div className="max-w-md mx-auto p-8 mt-20">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h1 className="text-xl font-bold mb-4">Admin Login</h1>
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-2 border rounded mb-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              if (password === ADMIN_PASSWORD) setAuthenticated(true)
-              else alert('Wrong password')
-            }}
-            className="w-full bg-blue-600 text-white py-2 rounded"
-          >
-            Login
-          </button>
+      <div className="max-w-md mx-auto p-4 mt-20">
+        <div className="card-beige p-8 space-y-6">
+          <h1 className="text-2xl font-bold font-serif text-center">Admin Login</h1>
+          <div className="space-y-4">
+            <input
+              type="password"
+              placeholder="Password"
+              className="input-beige"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && (password === ADMIN_PASSWORD ? setAuthenticated(true) : alert('Salah password'))}
+            />
+            <button
+              onClick={() => {
+                if (password === ADMIN_PASSWORD) setAuthenticated(true)
+                else alert('Wrong password')
+              }}
+              className="btn-primary w-full"
+            >
+              Login
+            </button>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard - Wan Wardah</h1>
+    <div className="max-w-5xl mx-auto px-4 space-y-10">
+      <header className="flex justify-between items-center border-b border-border pb-6">
+        <h1 className="text-3xl font-bold font-serif">Admin Dashboard</h1>
+        <button onClick={() => setAuthenticated(false)} className="text-sm text-accent hover:text-primary underline">Logout</button>
+      </header>
       
       {/* Apartment Section */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">🏠 Apartemen: Vittoria 16/C</h2>
-          <button onClick={() => setEditing(!editing)} className="text-blue-600">
-            {editing ? 'Cancel' : 'Edit'}
+      <section className="card-beige p-8 space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold font-serif">🏠 Pengaturan Apartemen</h2>
+          <button 
+            onClick={() => setEditing(!editing)} 
+            className="text-primary font-semibold text-sm hover:underline"
+          >
+            {editing ? 'Batal' : 'Edit Detail'}
           </button>
         </div>
         
         {editing ? (
-          <form onSubmit={updateApartment} className="space-y-3">
-            <input name="title" defaultValue={apartment?.title} className="w-full p-2 border rounded" />
-            <textarea name="description" defaultValue={apartment?.description} className="w-full p-2 border rounded" rows={3} />
-            <input name="price" type="number" defaultValue={apartment?.price_per_night} className="w-full p-2 border rounded" />
-            <input name="location" defaultValue={apartment?.location} className="w-full p-2 border rounded" />
-            <input name="capacity" type="number" defaultValue={apartment?.capacity} className="w-full p-2 border rounded" />
-            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+          <form onSubmit={updateApartment} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="text-xs uppercase font-bold text-accent">Judul</label>
+              <input name="title" defaultValue={apartment?.title} className="input-beige" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="text-xs uppercase font-bold text-accent">Deskripsi</label>
+              <textarea name="description" defaultValue={apartment?.description} className="input-beige" rows={4} />
+            </div>
+            <div>
+              <label className="text-xs uppercase font-bold text-accent">Harga / Malam</label>
+              <input name="price" type="number" defaultValue={apartment?.price_per_night} className="input-beige" />
+            </div>
+            <div>
+              <label className="text-xs uppercase font-bold text-accent">Lokasi</label>
+              <input name="location" defaultValue={apartment?.location} className="input-beige" />
+            </div>
+            <div>
+              <label className="text-xs uppercase font-bold text-accent">Kapasitas Tamu</label>
+              <input name="capacity" type="number" defaultValue={apartment?.capacity} className="input-beige" />
+            </div>
+            <div className="md:col-span-2 pt-2">
+              <button type="submit" className="btn-primary w-full md:w-auto">Simpan Perubahan</button>
+            </div>
           </form>
         ) : (
-          <div>
-            <p className="font-semibold">{apartment?.title}</p>
-            <p className="text-gray-600 text-sm">{apartment?.description}</p>
-            <p className="mt-2">💰 Rp {apartment?.price_per_night?.toLocaleString()}/malam</p>
-            <p>📍 {apartment?.location}</p>
-            <p>👥 Max {apartment?.capacity} tamu</p>
+          <div className="grid md:grid-cols-2 gap-6 bg-secondary/10 p-4 rounded-xl">
+            <div className="space-y-2">
+              <p className="text-sm text-accent font-bold uppercase tracking-widest">Detail Unit</p>
+              <p className="font-bold text-lg">{apartment?.title}</p>
+              <p className="text-sm text-foreground/70 leading-relaxed line-clamp-3">{apartment?.description}</p>
+            </div>
+            <div className="space-y-1 text-sm pt-6 md:pt-0">
+              <p>💰 <span className="font-bold">Rp {apartment?.price_per_night?.toLocaleString()}</span> / malam</p>
+              <p>📍 {apartment?.location}</p>
+              <p>👥 Max {apartment?.capacity} tamu</p>
+            </div>
           </div>
         )}
         
         {/* Photo Upload */}
-        <div className="mt-6 pt-6 border-t">
-          <h3 className="font-semibold mb-3">📸 Foto Apartemen</h3>
-          <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="mt-6 pt-6 border-t border-border space-y-4">
+          <h3 className="font-semibold text-accent uppercase tracking-widest text-sm">📸 Gallery Foto</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
             {apartment?.images?.map((img: string, idx: number) => (
-              <div key={idx} className="relative">
-                <img src={img} className="w-full h-24 object-cover rounded" />
-                <button onClick={() => deletePhoto(img)} className="absolute top-1 right-1 bg-red-600 text-white rounded-full px-1 text-xs">×</button>
+              <div key={idx} className="relative aspect-square group">
+                <img src={img} className="w-full h-full object-cover rounded-lg shadow-sm" />
+                <button 
+                  onClick={() => deletePhoto(img)} 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
-          <input type="file" multiple accept="image/*" onChange={uploadPhotos} disabled={uploading} />
-          {uploading && <p className="text-sm mt-2">Uploading...</p>}
-          <p className="text-xs text-gray-500 mt-2">Klik atau drag foto untuk upload. Support JPG, PNG.</p>
+          
+          <div className="pt-4">
+            <label className="inline-flex items-center gap-2 cursor-pointer bg-white border-2 border-dashed border-border p-4 rounded-xl hover:border-primary transition-colors w-full justify-center">
+              <span className="text-sm font-medium text-accent">
+                {uploading ? '⏳ Mengunggah...' : '➕ Tambah Foto Baru'}
+              </span>
+              <input type="file" multiple accept="image/*" onChange={uploadPhotos} disabled={uploading} className="hidden" />
+            </label>
+          </div>
         </div>
-      </div>
+      </section>
       
-      {/* Bookings */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 className="text-xl font-bold mb-4">📋 Booking Apartemen</h2>
-        {bookings.length === 0 && <p className="text-gray-500">Belum ada booking</p>}
-        {bookings.map((booking) => (
-          <div key={booking.id} className="border rounded p-4 mb-3">
-            <div className="flex justify-between flex-wrap gap-2">
-              <div>
-                <p className="font-semibold">{booking.guest_name}</p>
-                <p className="text-sm">📱 {booking.guest_whatsapp}</p>
-                <p className="text-sm">📅 {booking.check_in} → {booking.check_out}</p>
-                <p className="text-sm">👥 {booking.guest_count} tamu</p>
-                {booking.message && <p className="text-sm text-gray-500">📝 {booking.message}</p>}
+      <div className="grid md:grid-cols-2 gap-10">
+        {/* Bookings */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold font-serif px-2">📋 Booking Apartemen</h2>
+          {bookings.length === 0 && <p className="text-accent italic px-2">Belum ada booking</p>}
+          <div className="space-y-4">
+            {bookings.map((booking) => (
+              <div key={booking.id} className="card-beige p-5 space-y-3 relative overflow-hidden">
+                {booking.status === 'confirmed' && <div className="absolute top-0 right-0 bg-green-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-bl-lg">Confirmed</div>}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-bold text-lg">{booking.guest_name}</p>
+                    <p className="text-xs text-accent font-semibold">📱 {booking.guest_whatsapp}</p>
+                  </div>
+                  {booking.status === 'pending' && (
+                    <button 
+                      onClick={() => updateBookingStatus(booking.id, 'confirmed')} 
+                      className="text-xs bg-primary text-white px-3 py-1.5 rounded-full font-bold shadow-sm"
+                    >
+                      Konfirmasi
+                    </button>
+                  )}
+                </div>
+                <div className="text-sm space-y-1 text-foreground/80">
+                  <p className="flex items-center gap-2 italic">
+                    <span className="text-primary">📅</span> {booking.check_in} → {booking.check_out}
+                  </p>
+                  <p>👥 {booking.guest_count} tamu</p>
+                  {booking.message && <div className="mt-2 p-2 bg-background rounded text-xs italic">"{booking.message}"</div>}
+                </div>
               </div>
-              <div>
-                <span className={`px-2 py-1 rounded text-xs ${booking.status === 'pending' ? 'bg-yellow-200' : 'bg-green-200'}`}>
-                  {booking.status === 'pending' ? 'Menunggu' : 'Dikonfirmasi'}
-                </span>
-                {booking.status === 'pending' && (
-                  <button onClick={() => updateBookingStatus(booking.id, 'confirmed')} className="ml-2 bg-green-600 text-white px-3 py-1 rounded text-sm">
-                    Konfirmasi
-                  </button>
-                )}
+            ))}
+          </div>
+        </section>
+        
+        {/* Trip Bookings */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold font-serif px-2">✈️ Booking Trip</h2>
+          {trips.length === 0 && <p className="text-accent italic px-2">Belum ada booking trip</p>}
+          <div className="space-y-4">
+            {trips.map((booking) => (
+              <div key={booking.id} className="card-beige p-5 space-y-3 border-l-4 border-secondary">
+                <div className="flex justify-between items-start">
+                  <p className="font-bold text-lg">{booking.guest_name}</p>
+                  <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded-full ${booking.status === 'pending' ? 'bg-secondary/30 text-accent' : 'bg-green-100 text-green-700'}`}>
+                    {booking.status === 'pending' ? 'Pending' : 'Done'}
+                  </span>
+                </div>
+                <div className="text-sm space-y-1 text-foreground/80">
+                  <p className="text-primary font-bold">🎒 {booking.trip_packages?.name || 'CUSTOM TRIP'}</p>
+                  <p className="text-xs text-accent font-semibold">📱 {booking.guest_whatsapp}</p>
+                  <p>👥 {booking.guest_count} orang</p>
+                  {booking.special_requests && (
+                    <div className="mt-2 p-2 bg-background rounded text-xs italic line-clamp-2">
+                      {booking.special_requests}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-      
-      {/* Trip Bookings */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-4">✈️ Booking Trip</h2>
-        {trips.length === 0 && <p className="text-gray-500">Belum ada booking trip</p>}
-        {trips.map((booking) => (
-          <div key={booking.id} className="border rounded p-4 mb-3">
-            <p className="font-semibold">{booking.guest_name}</p>
-            <p className="text-sm">📱 {booking.guest_whatsapp}</p>
-            <p className="text-sm">🎒 {booking.trip_packages?.name || 'CUSTOM TRIP'}</p>
-            <p className="text-sm">👥 {booking.guest_count} orang</p>
-            {booking.special_requests && <p className="text-sm text-gray-500">📝 {booking.special_requests}</p>}
-            <span className={`px-2 py-1 rounded text-xs ${booking.status === 'pending' ? 'bg-yellow-200' : 'bg-green-200'}`}>
-              {booking.status === 'pending' ? 'Menunggu' : 'Dikonfirmasi'}
-            </span>
-          </div>
-        ))}
+        </section>
       </div>
     </div>
   )

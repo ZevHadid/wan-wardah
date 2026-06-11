@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function BookPage() {
   const router = useRouter()
@@ -41,62 +42,100 @@ export default function BookPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Booking Apartemen Vittoria 16/C</h1>
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          type="text"
-          placeholder="Nama lengkap *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_name: e.target.value})}
-        />
-        <input
-          type="tel"
-          placeholder="Nomor WhatsApp (contoh: 628123456789) *"
-          required
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_whatsapp: e.target.value})}
-        />
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="date"
-            required
-            className="w-full p-2 border rounded"
-            onChange={e => setForm({...form, check_in: e.target.value})}
-          />
-          <input
-            type="date"
-            required
-            className="w-full p-2 border rounded"
-            onChange={e => setForm({...form, check_out: e.target.value})}
-          />
-        </div>
-        <input
-          type="number"
-          placeholder="Jumlah tamu"
-          min="1"
-          max="3"
-          className="w-full p-2 border rounded"
-          onChange={e => setForm({...form, guest_count: parseInt(e.target.value)})}
-        />
-        <textarea
-          placeholder="Catatan (opsional)"
-          className="w-full p-2 border rounded"
-          rows={3}
-          onChange={e => setForm({...form, message: e.target.value})}
-        />
-        <button 
-          type="submit" 
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
-        >
-          {loading ? 'Mengirim...' : 'Kirim & Buka WhatsApp'}
-        </button>
-        <p className="text-xs text-gray-500 text-center mt-4">
-          * Mami akan konfirmasi ketersediaan dan total harga via WhatsApp
-        </p>
-      </form>
+    <div className="max-w-2xl mx-auto px-4">
+      <div className="card-beige p-8 space-y-8">
+        <header className="text-center space-y-2 border-b border-border pb-6">
+          <h1 className="text-3xl font-bold italic">Booking Apartemen</h1>
+          <p className="text-accent italic">Vittoria Residence 16/C</p>
+        </header>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Nama Lengkap</label>
+              <input
+                type="text"
+                placeholder="cth: Budi Santoso"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, guest_name: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Nomor WhatsApp</label>
+              <input
+                type="tel"
+                placeholder="cth: 628123456789"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, guest_whatsapp: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Check-In</label>
+              <input
+                type="date"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, check_in: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Check-Out</label>
+              <input
+                type="date"
+                required
+                className="input-beige"
+                onChange={e => setForm({...form, check_out: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Jumlah Tamu</label>
+            <input
+              type="number"
+              placeholder="Maksimal 3 orang"
+              min="1"
+              max="3"
+              className="input-beige"
+              onChange={e => setForm({...form, guest_count: parseInt(e.target.value)})}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-accent uppercase tracking-wider ml-1">Catatan (Opsional)</label>
+            <textarea
+              placeholder="Ada permintaan khusus?"
+              className="input-beige"
+              rows={3}
+              onChange={e => setForm({...form, message: e.target.value})}
+            />
+          </div>
+
+          <div className="pt-4">
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn-primary w-full text-lg py-4 shadow-lg shadow-primary/20 disabled:opacity-50"
+            >
+              {loading ? 'Sedang Memproses...' : 'Kirim & Konfirmasi WhatsApp'}
+            </button>
+            <p className="text-center text-xs text-accent mt-4 italic">
+              * Mami akan menghubungi Anda via WhatsApp untuk detail pembayaran
+            </p>
+          </div>
+        </form>
+      </div>
+      
+      <div className="mt-8 text-center">
+        <Link href="/" className="text-accent hover:text-primary transition-colors text-sm font-medium">
+          ← Kembali ke Beranda
+        </Link>
+      </div>
     </div>
   )
 }
