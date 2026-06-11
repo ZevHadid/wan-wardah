@@ -24,7 +24,7 @@ export default function BookPage() {
     const { error } = await supabase.from('bookings').insert([form])
     
     if (!error) {
-      const waMessage = `Halo! Saya mau booking apartemen Vittoria 16/C.%0A%0A` +
+      const waMessage = `Halo! Saya mau booking apartemen di Jakarta 16/C.%0A%0A` +
         `Nama: ${form.guest_name}%0A` +
         `Check-in: ${form.check_in}%0A` +
         `Check-out: ${form.check_out}%0A` +
@@ -46,7 +46,7 @@ export default function BookPage() {
       <div className="card-beige p-8 space-y-8">
         <header className="text-center space-y-2 border-b border-border pb-6">
           <h1 className="text-3xl font-bold italic">Booking Apartemen</h1>
-          <p className="text-accent italic">Vittoria Residence 16/C</p>
+          <p className="text-accent italic">Cozy Apartment in Jakarta (Unit 16/C)</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6">

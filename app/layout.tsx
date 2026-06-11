@@ -34,7 +34,8 @@ export default function RootLayout({
             <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-primary transition-colors">
               Wan Wardah
             </Link>
-            <nav className="flex gap-6 text-sm font-medium">
+            <nav className="flex gap-6 text-sm font-medium items-center">
+              <Link href="/open-trip" className="text-primary font-bold hover:opacity-80 transition-opacity">Open Trip 🔥</Link>
               <Link href="/book" className="hover:text-primary transition-colors">Booking</Link>
               <Link href="/custom-trip" className="hover:text-primary transition-colors">Custom Trip</Link>
             </nav>
